@@ -3,7 +3,7 @@ node-rcswitch
 
 [![NPM version](https://badge.fury.io/js/rcswitch.svg)](http://badge.fury.io/js/rcswitch)
 
-Node bindings for the [rcswitch RaspberryPi port](https://github.com/r10r/rcswitch-pi).
+Node bindings for the [rcswitch RaspberryPi port](https://github.com/sui77/rc-switch).
 
 It should be compatible with all versions of Node.js starting from 0.8.
 
