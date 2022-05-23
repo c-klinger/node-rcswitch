@@ -35,8 +35,12 @@ void RCSwitchNode::Init(v8::Local<v8::Object> exports) {
   Nan::SetPrototypeMethod(tpl, "getReceivedProtocol", GetReceivedProtocol);
   Nan::SetPrototypeMethod(tpl, "getReceivedRawdata", GetReceivedRawdata);
 
-  constructor.Reset(tpl->GetFunction());
-  exports->Set(Nan::New("RCSwitch").ToLocalChecked(), tpl->GetFunction());
+  constructor.Reset(Nan::GetFunction(tpl).ToLocalChecked());
+//  exports->Set(Nan::New("RCSwitch").ToLocalChecked(), tpl));// tpl->GetFunction());
+   Nan::Set(exports,
+            Nan::New("RCSwitch").ToLocalChecked(),
+            Nan::GetFunction(tpl).ToLocalChecked());
+
 }
 
  RCSwitchNode::RCSwitchNode() {}
@@ -52,13 +56,13 @@ void RCSwitchNode::SwitchOp(const Nan::FunctionCallbackInfo<v8::Value>& info, bo
     v8::Local<v8::Value> swtch = info[1];
 
     if(group->IsInt32() && swtch->IsInt32()) {
-      switchOp2(group->Int32Value(), swtch->Int32Value());
+      switchOp2(Nan::To<int32_t>(group).ToChecked(), Nan::To<int32_t>(swtch).ToChecked());
       info.GetReturnValue().Set(true);
     } else if(group->IsString() && swtch->IsInt32()) {
       Nan::Utf8String sGroup(group);
 
       if(sGroup.length() >= 5) {
-        switchOp2(*sGroup, swtch->Int32Value());
+        switchOp2(*sGroup, Nan::To<int32_t>(swtch).ToChecked());
         info.GetReturnValue().Set(true);
       }
     }
@@ -71,7 +75,7 @@ void RCSwitchNode::SwitchOp(const Nan::FunctionCallbackInfo<v8::Value>& info, bo
       Nan::Utf8String v8str(famly);
 
       if(v8str.length() > 0) {
-        switchOp3(*(*v8str), group->Int32Value(), devce->Int32Value());
+        switchOp3(*(*v8str), Nan::To<int32_t>(group).ToChecked(), Nan::To<int32_t>(devce).ToChecked());
         info.GetReturnValue().Set(true);
       }
     }
@@ -121,7 +125,7 @@ void RCSwitchNode::EnableTransmit(const Nan::FunctionCallbackInfo<v8::Value>& in
 
   v8::Local<v8::Value> pinNr = info[0];
   if(pinNr->IsInt32()) {
-    obj->rcswitch.enableTransmit(pinNr->Int32Value());
+    obj->rcswitch.enableTransmit(Nan::To<int32_t>(pinNr).ToChecked());
     info.GetReturnValue().Set(true);
   } else {
     info.GetReturnValue().Set(false);
@@ -150,7 +154,7 @@ void RCSwitchNode::SetProtocol(v8::Local<v8::String> property, v8::Local<v8::Val
   RCSwitchNode* obj = ObjectWrap::Unwrap<RCSwitchNode>(info.Holder());
 
   if(value->IsInt32())
-    obj->rcswitch.setProtocol(value->Int32Value());
+    obj->rcswitch.setProtocol(Nan::To<int32_t>(value).ToChecked());
 }
 
 // notification.protocol
@@ -166,7 +170,7 @@ void RCSwitchNode::EnableReceive(const Nan::FunctionCallbackInfo<v8::Value>& inf
 
   v8::Local<v8::Value> pinNr = info[0];
   if(pinNr->IsInt32()) {
-    obj->rcswitch.enableReceive(pinNr->Int32Value());
+    obj->rcswitch.enableReceive(Nan::To<int32_t>(pinNr).ToChecked());
     info.GetReturnValue().Set(true);
   } else {
     info.GetReturnValue().Set(false);

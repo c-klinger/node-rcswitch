@@ -5,7 +5,7 @@ node-rcswitch
 
 Node bindings for the [rcswitch RaspberryPi port](https://github.com/sui77/rc-switch).
 
-It should be compatible with all versions of Node.js starting from 0.8.
+It should be compatible with all versions of Node.js starting from v10
 
 ## Requirements
 
